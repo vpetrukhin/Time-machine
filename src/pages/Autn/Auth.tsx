@@ -1,21 +1,28 @@
 import React, {ChangeEvent, useState} from 'react';
 import {Box, Button, TextField, Typography} from "@mui/material";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../store";
+import {setIsAuth} from "../../store/slices/auth";
+import {PageBox} from "../../components";
 
 export const Auth = () => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
+    const dispatch = useDispatch<AppDispatch>();
+
     const handleLoginChange = (e: ChangeEvent<HTMLInputElement>) => setLogin(e.target.value);
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
+    const handleSubmit = () => {
+      dispatch(setIsAuth({ login, password }));
+    }
+
     return (
-        <Box sx={{
-            width: '100%',
-            height: '100vh',
+        <PageBox sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'secondary.main',
         }}>
             <Box noValidate autoComplete="off" component='form' sx={{
                 maxWidth: '500px',
@@ -28,8 +35,8 @@ export const Auth = () => {
                            margin="normal" onChange={handleLoginChange}/>
                 <TextField value={password} type='password' variant='outlined' required id='password'
                            placeholder='Пароль' margin="normal" onChange={handlePasswordChange}/>
-                <Button variant='outlined'>Войти</Button>
+                <Button variant='outlined' onClick={handleSubmit}>Войти</Button>
             </Box>
-        </Box>
+        </PageBox>
     );
 };

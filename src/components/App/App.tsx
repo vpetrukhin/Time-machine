@@ -1,17 +1,18 @@
 import React from 'react';
 import './App.css';
-import {Route, Routes} from "react-router-dom";
-import {Auth} from "../../pages";
-import {Result} from "../../pages/Result/Result";
-import {Private} from "../hoc";
+import {Auth, Result} from "../../pages";
+import {useSelector} from "react-redux";
+import {RootState} from "../../store";
 
 function App() {
+    const { isAuth } = useSelector((state: RootState) => state.auth)
+
     return (
         <div className='app'>
-            <Routes>
-                <Route path='/auth' element={<Auth/>}/>
-                <Route path='/' element={<Private><Result/></Private>}/>
-            </Routes>
+            {isAuth
+                ? <Result/>
+                : <Auth />
+            }
         </div>
     );
 }
