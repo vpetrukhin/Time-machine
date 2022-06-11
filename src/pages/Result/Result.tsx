@@ -36,7 +36,7 @@ export const Result = () => {
                         {functions.map((func, index) => (
                             <Function {...func} index={index} />
                         ))}
-                        <Button variant='contained' onClick={handleSubmit}>Отправить на функции</Button>
+                        <Button variant='contained' onClick={handleSubmit}>Отправить в систему</Button>
                     </Box>
                 </main>
             </Container>
