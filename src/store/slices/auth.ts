@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ISigninResponce} from "../../types/auth.types";
+import {ISigninResponce, roleType} from "../../types/auth.types";
 
 export interface IUserInfo {
     username: string,
@@ -7,7 +7,7 @@ export interface IUserInfo {
     name: string,
     authorities: [
         {
-            authority: string,
+            authority: roleType,
         }
     ],
 }

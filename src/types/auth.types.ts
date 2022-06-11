@@ -16,7 +16,9 @@ export interface ISigninResponce {
     name: string,
     authorities: [
         {
-            authority: string,
+            authority: roleType,
         }
     ]
 }
+
+export type roleType = 'ROLE_USER' | 'ROLE_ADMIN'

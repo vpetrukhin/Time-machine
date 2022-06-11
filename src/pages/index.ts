@@ -1,2 +1,2 @@
 export * from './Autn/Auth';
-export * from './Result/Result';
+export * from './Result/Functions';

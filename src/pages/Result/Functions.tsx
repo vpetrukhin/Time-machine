@@ -6,7 +6,7 @@ import {AppDispatch, RootState} from "../../store";
 import {addFunction} from "../../store/slices/form";
 import {Function} from "../../components/Function/Function";
 
-export const Result = () => {
+export const Functions = () => {
     const { functions } = useSelector((state: RootState) => state.form);
     const dispatch = useDispatch<AppDispatch>();
 
