@@ -1,25 +1,40 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ISigninResponce} from "../../types/auth.types";
 
-const testUser = {
-    login: 'admin',
-    password: 'admin'
+export interface IUserInfo {
+    username: string,
+    surname: string,
+    name: string,
+    authorities: [
+        {
+            authority: string,
+        }
+    ],
 }
 
 export interface IState {
     isAuth: boolean;
+    userInfo: IUserInfo | null;
 }
 
 export const initialState: IState = {
-    isAuth: false
+    isAuth: false,
+    userInfo: null,
 }
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        setIsAuth: (state, action: PayloadAction<{ login: string, password: string }>) => {
-            const { login, password } = action.payload;
-            state.isAuth = login === testUser.login && password === testUser.password;
+        setIsAuth: (state, action: PayloadAction<ISigninResponce>) => {
+            const { username, surname, authorities, name, token } = action.payload;
+
+            state.userInfo = { username, surname, authorities, name };
+            if (token) state.isAuth = true;
+        },
+        checkAuth: (state) => {
+            const token = localStorage.getItem('jwt');
+            state.isAuth = Boolean(token);
         }
     }
 })

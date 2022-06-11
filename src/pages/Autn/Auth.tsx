@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store";
 import {setIsAuth} from "../../store/slices/auth";
 import {PageBox} from "../../components";
+import AuthenticationService from '../../sevices/Auth';
 
 export const Auth = () => {
     const [login, setLogin] = useState<string>('');
@@ -14,8 +15,9 @@ export const Auth = () => {
     const handleLoginChange = (e: ChangeEvent<HTMLInputElement>) => setLogin(e.target.value);
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
-    const handleSubmit = () => {
-      dispatch(setIsAuth({ login, password }));
+    const handleSubmit = async () => {
+        const data = await AuthenticationService.signin(login, password);
+        if (data) dispatch(setIsAuth(data));
     }
 
     return (
