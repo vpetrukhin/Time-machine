@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Header, Model, PageBox} from "../../components";
-import {Box, Button, Container, Modal} from "@mui/material";
+import {Box, Button, Container, List, ListItem, Modal, Typography} from "@mui/material";
 import service from "../../sevices/Auth"
-import {IModel, IParameter} from "../../types/model.types";
-import {randomInt} from "crypto";
+import {IModel} from "../../types/model.types";
 
 export const AdminPage = () => {
 
@@ -64,25 +63,54 @@ export const AdminPage = () => {
                     <Modal
                         open={open}
                         onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
-                        sx={{background: '#FF80FF'}}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
                     >
-                        <Model model={model}  setModel={handleChangeModel}/>
+                        <Box sx={{
+                            width: '50%',
+                            border: '1px solid #f0f0f0',
+                            borderRadius: '20px',
+                            padding: '10px',
+                            backgroundColor: '#000',
+                        }}>
+                            <Model model={model}  setModel={handleChangeModel}/>
+                        </Box>
                     </Modal>
                     <Box noValidate autoComplete="off" component='form' sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                    }}><ul>
-                        {modelList.map((model, index) => (
-                         <li>
-                             Название:{model.name}
-                            Модель:{model.equation}
-                             <Button variant={"contained"} onClick={()=>handleEdit(index)}>Edit</Button>
-                             <Button variant={"contained"} onClick={()=>handleDelete(index)}>Delete</Button>
-                         </li>
-                        ))}
-                    </ul>
+                    }}>
+                        <List>
+                            {modelList.map((model, index) => (
+                                 <ListItem sx={{
+                                     display: 'flex',
+                                     alignItems: 'center',
+                                 }}>
+                                     <Box sx={{
+                                         display: 'flex',
+                                         flexWrap: 'wrap',
+                                         width: '100%',
+                                         gap: '5px',
+                                     }}>
+                                         <Typography variant='h6' color='#fff' sx={{
+                                             width: '10%',
+                                             textAlign: 'center',
+                                         }}>{index + 1}</Typography>
+                                         <Typography variant='h6' color='#fff' sx={{
+                                             width: '80%',
+                                         }}>{model.name}</Typography>
+                                         <Button variant={"contained"} onClick={()=>handleEdit(index)} sx={{
+                                             width: '10%',
+                                         }}>Изменить</Button>
+                                         <Typography variant='subtitle1' color='#fff'>Модель: {model.equation}</Typography>
+                                     </Box>
+                                     <Button variant={"contained"} color='error' onClick={()=>handleDelete(index)}>Delete</Button>
+                                 </ListItem>
+                            ))}
+                        </List>
                         <Button variant='contained' onClick={handleSubmit}>Отправить в систему</Button>
                     </Box>
                 </main>

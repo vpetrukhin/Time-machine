@@ -39,7 +39,7 @@ export const Model = ({model ,setModel}: ModelProps) => {
                     <Parameter key={parameter.name} index={parameterIndex}/>
                 ))}
             </Box>
-            <Button variant={"outlined"} onClick={()=>setModel({id:model.id,name, equation, paramList} as IModel)}>Закрыть</Button>
+            <Button variant={"contained"} onClick={()=>setModel({id:model.id,name, equation, paramList} as IModel)}>Закрыть</Button>
         </Box>
     );
 };
