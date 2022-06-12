@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Auth, Functions} from "../../pages";
+import {Auth, AdminPage} from "../../pages";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store";
 
@@ -15,7 +15,7 @@ function App() {
                 ? (
                     <>
                         {userInfo && userInfo.authorities[0].authority === "ROLE_ADMIN"
-                            ? <Functions/>
+                            ? <AdminPage/>
                             : <>графики</>
                         }
                     </>
