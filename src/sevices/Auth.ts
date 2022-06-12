@@ -1,6 +1,6 @@
 import axios from "axios";
 import {IRegisterObj} from "../types/auth.types";
-import {IModel} from "../types/model.types";
+import {IModel, IParameterValueObj} from "../types/model.types";
 
 axios.interceptors.request.use(config => {
     const user = JSON.parse(localStorage.getItem('user') as string);
@@ -49,6 +49,11 @@ class AuthenticationService {
 
     sendModel(modelList: IModel[]) {
         return axios.post("/model",modelList);
+    }
+
+    setParametres(paramsList: IParameterValueObj[]) {
+        return axios.post("/setParameter", paramsList)
+
     }
 }
 

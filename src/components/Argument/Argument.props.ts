@@ -1,4 +1,7 @@
 export interface ArgumentProps {
     argument: string;
-    onChange: (value: string) => void;
+    index: number
+    modelID: number;
+    title: string;
+    onChange: (value: string, modelID: number, key: string, index: number) => void;
 }
