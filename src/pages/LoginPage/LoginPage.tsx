@@ -1,23 +1,38 @@
 import React, {ChangeEvent, useState} from 'react';
 import {Box, Button, TextField, Typography} from "@mui/material";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../store";
-import {setIsAuth} from "../../store/slices/auth";
 import {PageBox} from "../../components";
 import AuthenticationService from '../../sevices/Auth';
+import {IUser} from "../../types/auth.types";
+import {useNavigate} from "react-router-dom";
 
-export const Auth = () => {
+export const LoginPage = () => {
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-
-    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     const handleLoginChange = (e: ChangeEvent<HTMLInputElement>) => setLogin(e.target.value);
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
     const handleSubmit = async () => {
-        const data = await AuthenticationService.signin(login, password);
-        if (data) dispatch(setIsAuth(data));
+        AuthenticationService
+            .signin(login, password)
+            .then((user: IUser) => {
+                    switch (user.authorities[0].authority) {
+                        case "ROLE_USER":
+                            navigate('/judge');
+                            break;
+                        case "ROLE_ADMIN":
+                            navigate('/admin');
+                            break;
+                        default:
+                            navigate('/');
+                            break;
+                    }
+                },
+                error => {
+                    console.log("Login fail: error = { " + error.toString() + " }");
+                }
+            )
     }
 
     return (

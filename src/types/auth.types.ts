@@ -8,7 +8,7 @@ export interface IRegisterObj {
     password: string
 }
 
-export interface ISigninResponce {
+export interface IUser {
     token: string,
     tokenType: string,
     username: string,

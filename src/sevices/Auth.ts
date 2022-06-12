@@ -1,15 +1,27 @@
 import axios from "axios";
 import {IRegisterObj} from "../types/auth.types";
+import {IModel} from "../types/model.types";
 
-class AuthenticationService {
-    private baseUrl: string;
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl
+axios.interceptors.request.use(config => {
+    const user = JSON.parse(localStorage.getItem('user') as string);
+
+    if (user && user.token) {
+        config.headers = {...config.headers, "Authorization": 'Bearer ' + user.token};
     }
 
+    return config;
+});
+
+class AuthenticationService {
+
     signin = (username: string, password: string) => {
-        return axios.post(`${this.baseUrl}/api/auth/signin`, {username, password})
-            .then(response => response.data)
+        return axios.post("/api/auth/signin", {username, password})
+            .then(response => {
+                if (response.data.token) {
+                    localStorage.setItem("user", JSON.stringify(response.data));
+                }
+                return response.data;
+            })
             .catch(err => {
                 console.log(err);
                 throw err;
@@ -30,6 +42,14 @@ class AuthenticationService {
     getCurrentUser() {
         return JSON.parse(localStorage.getItem('user') as string);
     }
+
+    getModel() {
+        return axios.get("/model");
+    }
+
+    sendModel(modelList: IModel[]) {
+        return axios.post("/model",modelList);
+    }
 }
 
-export default new AuthenticationService('http://localhost:8081');
+export default new AuthenticationService();

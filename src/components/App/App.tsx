@@ -1,28 +1,16 @@
 import React from 'react';
 import './App.css';
-import {Auth, AdminPage} from "../../pages";
-import {useSelector} from "react-redux";
-import {RootState} from "../../store";
+import {LoginPage, AdminPage, UserPage} from "../../pages";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 function App() {
-    const { isAuth, userInfo } = useSelector((state: RootState) => state.auth);
-
-    // TODO спросить про роли
-
     return (
-        <div className='app'>
-            {isAuth
-                ? (
-                    <>
-                        {userInfo && userInfo.authorities[0].authority === "ROLE_ADMIN"
-                            ? <AdminPage/>
-                            : <>графики</>
-                        }
-                    </>
-                )
-                : <Auth />
-            }
-        </div>
+        <Routes>
+            <Route path='/'  element={<LoginPage />}/>
+            <Route path='/user' element={<UserPage />}/>
+            <Route path='/admin' element={<AdminPage />}/>
+            <Route path='*' element={<Navigate to={'/'} />} />
+        </Routes>
     );
 }
 

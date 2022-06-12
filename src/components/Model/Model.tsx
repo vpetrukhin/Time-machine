@@ -1,23 +1,20 @@
 import {ModelProps} from "./Model.props";
-import {removeModel, setModelKeyValue} from "../../store/slices/form";
 import {Box, Button, TextField, Typography} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../store";
-import {ChangeEvent} from "react";
-import {Parametr} from "../Parametr/Parametr";
+import React, {ChangeEvent, useState} from "react";
+import {Parameter} from "../Parametr/Parameter";
+import {IModel} from "../../types/model.types";
 
-export const Model = ({ index }: ModelProps) => {
-    const model = useSelector((state: RootState) => state.form.models[index])
-    const { name, equation, paramList } = model;
-    const dispatch = useDispatch<AppDispatch>();
+export const Model = ({model ,setModel}: ModelProps) => {
+    const [name,setName]=useState(model.name);
+    const [equation,setEquation] = useState(model.equation);
+    const [paramList,setParamList] =useState(model.paramList) ;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const key = e.target.name as 'name' | 'equation';
-        dispatch(setModelKeyValue({modelIndex: index, key, value: e.target.value}))
-    }
-
-    const handleDeleteFunc = () => {
-      dispatch(removeModel(index));
+        switch (key) {
+            case "equation":setEquation(e.target.value);break;
+            case "name":setName(e.target.value);break;
+        }
     }
 
     return (
@@ -25,23 +22,24 @@ export const Model = ({ index }: ModelProps) => {
             marginBottom: '20px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '10px',
+            gap: '10px'
         }}>
-            <Typography variant='h5' color='#fff'>Канал {index + 1}</Typography>
-            <TextField value={name} variant='outlined' fullWidth label='Название канала' name='name' onChange={handleChange} />
-            <TextField value={equation} variant='outlined' fullWidth label='Функция' name='equation' placeholder='Введите функцию' onChange={handleChange} />
+            <Typography variant='h5' color='#fff'>Добавление/изменение уравнения</Typography>
+            <TextField value={name} variant='outlined' fullWidth label='Название канала' name='name'
+                       onChange={handleChange}/>
+            <TextField value={equation} variant='outlined' fullWidth label='Функция' name='equation'
+                       placeholder='Введите функцию' onChange={handleChange}/>
             <Typography variant='h6' color='#fff'>Параметры:</Typography>
             <Box sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignItems: 'center',
             }}>
-                {paramList && paramList.length > 0 && paramList.map((parametr, parametrIndex) => (
-                    <Parametr key={parametr.name} modelIndex={index} index={parametrIndex} />
+                {paramList && paramList.length > 0 && paramList.map((parameter, parameterIndex) => (
+                    <Parameter key={parameter.name} index={parameterIndex}/>
                 ))}
             </Box>
-
-            <Button variant='contained' color='error' onClick={handleDeleteFunc}>Удалить</Button>
+            <Button variant={"outlined"} onClick={()=>setModel({id:model.id,name, equation, paramList} as IModel)}>Закрыть</Button>
         </Box>
     );
 };

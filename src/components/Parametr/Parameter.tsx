@@ -1,19 +1,14 @@
 import {ParametrProps} from "./Parametr.props";
 import {Box, TextField, Typography} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../store";
 import {ChangeEvent} from "react";
-import {setParamKeyValue} from "../../store/slices/form";
-import {IParametr} from "../../types/model.types";
+import {IParameter} from "../../types/model.types";
 
-export const Parametr = ({ index, modelIndex }: ParametrProps) => {
-    const parametr = useSelector((state: RootState) => state.form.models[modelIndex].paramList[index]);
-    const { title, name, type } = parametr;
-    const dispatch = useDispatch<AppDispatch>();
+export const Parameter = ({ index }: ParametrProps) => {
+    const parameter={title:"",name:"",type:""};
+    const { title, name, type } = parameter;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const key = e.target.name as keyof IParametr;
-        dispatch(setParamKeyValue({modelIndex, paramIndex: index, key, value: e.target.value}))
+        const key = e.target.name as keyof IParameter;
     }
 
     return (

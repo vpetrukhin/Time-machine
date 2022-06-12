@@ -1,3 +1,6 @@
+import {IModel} from "../../types/model.types";
+
 export interface ModelProps {
-    index: number,
+    model: IModel,
+    setModel: ( model:IModel)=>void;
 }

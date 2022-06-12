@@ -1,11 +1,8 @@
 import React from 'react';
 import {Typography} from "@mui/material";
-import {useSelector} from "react-redux";
-import {RootState} from "../../store";
-import {roleType} from "../../types/auth.types";
+import {IUser, roleType} from "../../types/auth.types";
 
 export const Profile = () => {
-    const user = useSelector((state: RootState) => state.auth.userInfo);
 
     const getRoleByRussian = (role: roleType): string => {
         switch (role) {
@@ -18,24 +15,7 @@ export const Profile = () => {
         }
     }
 
-    // [
-    //     {
-    //         "name": "string",
-    //         "equation": "string",
-    //         "paramList": [
-    //             {
-    //                 "name": "string",
-    //                 "title": "string",
-    //                 "type": "string"
-    //             }
-    //         ]
-    //     }
-    // ]
-
-    // (a, b, c) => {
-    //
-    // }
-
+    const user :IUser =JSON.parse(localStorage.getItem("user") as string);
 
     return (
         <>
