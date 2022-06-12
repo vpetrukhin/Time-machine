@@ -19,7 +19,7 @@ export const LoginPage = () => {
             .then((user: IUser) => {
                     switch (user.authorities[0].authority) {
                         case "ROLE_USER":
-                            navigate('/judge');
+                            navigate('/user');
                             break;
                         case "ROLE_ADMIN":
                             navigate('/admin');

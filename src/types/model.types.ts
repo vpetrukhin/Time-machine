@@ -10,5 +10,12 @@ export interface IModel {
     name: string,
     equation: string,
     paramList: Array<IParameter>
+}
 
+export interface IParameterValueObj {
+    equationId: number;
+    param: Array<{
+            key: string,
+            value: string
+    }>;
 }
