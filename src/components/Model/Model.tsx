@@ -1,6 +1,6 @@
 import {ModelProps} from "./Model.props";
-import {Box, Button, TextField, Typography} from "@mui/material";
-import React, {ChangeEvent, useState} from "react";
+import {Box, Button, List, ListItem, TextField, Typography} from "@mui/material";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {Parameter} from "../Parametr/Parameter";
 import {IModel} from "../../types/model.types";
 
@@ -8,6 +8,14 @@ export const Model = ({model, setModel}: ModelProps) => {
     const [name, setName] = useState(model.name);
     const [equation, setEquation] = useState(model.equation);
     const [paramList, setParamList] = useState(model.paramList);
+
+    console.log(paramList);
+
+    useEffect(() => {
+        if (model.equation) {
+            parse(model.equation)
+        }
+    }, [])
 
     const parse = (str: string) => {
         if (str.match("[(*)]")) {
@@ -25,7 +33,7 @@ export const Model = ({model, setModel}: ModelProps) => {
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const key = e.target.name as 'name' | 'equation' |'title';
+        const key = e.target.name as 'name' | 'equation';
         switch (key) {
             case "equation": {
                 setEquation(e.target.value);
@@ -35,13 +43,13 @@ export const Model = ({model, setModel}: ModelProps) => {
             case "name":
                 setName(e.target.value);
                 break;
-            case "title":
+            default:
                 const i=paramList.findIndex(el=>el.name===e.target.name);
-             //   setParamList((prev) => {
-                   // const a = [...prev]
-                   // a[i]={...a[i], value:e.target.value}
-                   // return a;
-               // });
+                setParamList((prev) => {
+                   const a = [...prev]
+                   a[i]={ ...a[i], title: e.target.value }
+                   return a;
+                });
                 break;
         }
 
@@ -65,14 +73,16 @@ export const Model = ({model, setModel}: ModelProps) => {
                 flexWrap: 'wrap',
                 alignItems: 'center',
             }}>
-                <ul>
+                <List sx={{
+                    width: '100%'
+                }}>
                     {paramList && paramList.length > 0 && paramList.map((parameter, parameterIndex) => (
-                        <li>
+                        <ListItem>
                             <Parameter key={parameter.name} title={parameter.title} name={parameter.name}
                                        onChange={handleChange}/>
-                        </li>
+                        </ListItem>
                     ))}
-                </ul>
+                </List>
             </Box>
             <Button variant={"contained"}
                     onClick={() => setModel({id: model.id, name, equation, paramList} as IModel)}>Закрыть</Button>
