@@ -31,3 +31,14 @@ export interface IResult {
     calculateResult: Array<number[]>,
     recommendation: number[],
 }
+
+export interface IMonitoring {
+    id: number;
+    name: string;
+    type: string;
+    involvement: number;
+    innerId: string;
+    up: boolean;
+    down: boolean;
+    link: string;
+}

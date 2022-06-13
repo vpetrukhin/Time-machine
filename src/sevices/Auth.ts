@@ -55,6 +55,10 @@ class AuthenticationService {
         return axios.post("/setParameter", paramsList)
 
     }
+
+    getChannel() {
+        return axios.get("/channels");
+    }
 }
 
 export default new AuthenticationService();
