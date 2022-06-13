@@ -9,6 +9,7 @@ export const Assessment = () => {
     const [modelList, setModelList] = useState<IResModel[]>([]);
     const [paramsValue, setParamsValue] = useState<IParameterValueObj[]>([]);
     const [result, setResult] = useState<IResult | null>(null);
+    const [profit,setProfit] = useState(0);
 
     useEffect(() => {
         service.getModel().then(res => {
@@ -45,10 +46,13 @@ export const Assessment = () => {
     const handleStartMachine = () => {
         service.setParametres(paramsValue).then((res) => {
             const data = res.data;
-            setResult({
+            const result={
                 calculateResult: data.calculateResult.map((item: string) => JSON.parse(item)),
-                recommendation: JSON.parse(data.recommendation)
-            })
+                    recommendation: JSON.parse(data.recommendation)
+            }
+            setResult(result);
+            const p=result.calculateResult.reduce((acc:number,el:number[])=>acc+el.reduce((a:number,it:number)=>a+it,0),0);
+            setProfit(p);
         }, e => console.log(e));
     }
 
@@ -98,24 +102,27 @@ export const Assessment = () => {
                 width: '50%',
             }}>
                 {result && result.calculateResult.length > 0 && (
-                    <VictoryChart
-                        theme={VictoryTheme.material}
-                        padding={{left: 50, bottom: 20}}
-                    >
-                        {result.calculateResult.map((item, index) => (
-                            <VictoryLine
-                                style={{
-                                    data: { stroke: `#c43a3${index}` },
-                                    parent: { border: "1px solid #ccc"}
-                                }}
-                                data={
-                                    item.map((value, index) => ({ x: index + 1, y: value }))
-                                }
-                                domain={{x: [0, 12], y: [0, 1000000]}}
-                                height={600}
-                            />
-                        ))}
-                    </VictoryChart>
+                    <>
+                        <Typography variant='h5' color='#fff'>{profit} р.</Typography>
+                        <VictoryChart
+                            theme={VictoryTheme.material}
+                            padding={{left: 50, bottom: 20}}
+                        >
+                            {result.calculateResult.map((item, index) => (
+                                <VictoryLine
+                                    style={{
+                                        data: { stroke: `#c43a3${index}` },
+                                        parent: { border: "1px solid #ccc"}
+                                    }}
+                                    data={
+                                        item.map((value, index) => ({ x: index + 1, y: value }))
+                                    }
+                                    domain={{x: [0, 12], y: [0, 1000000]}}
+                                    height={600}
+                                />
+                            ))}
+                        </VictoryChart>
+                    </>
                 )}
 
             </Box>
