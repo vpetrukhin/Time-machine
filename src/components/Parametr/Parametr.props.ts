@@ -1,3 +1,7 @@
+import {ChangeEvent} from "react";
+
 export interface ParametrProps {
-    index: number
+    name: string;
+    title: string;
+    onChange: (e: ChangeEvent<HTMLInputElement>)=>void;
 }
