@@ -19,8 +19,6 @@ export const AdminPage = () => {
         setOpen(true);
     }
 
-    console.log('render')
-
     const handleChangeModel = (model: IModel) => {
         console.log(model)
         if (model.id === -1)

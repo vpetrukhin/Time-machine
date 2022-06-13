@@ -55,6 +55,7 @@ export const Assessment = () => {
     return (
         <Box sx={{
             display: 'flex',
+            flexWrap: 'wrap',
         }}>
             <Box sx={{
                 width: '50%',
@@ -118,6 +119,19 @@ export const Assessment = () => {
                 )}
 
             </Box>
+            <Box sx={{
+                width: "80%",
+            }}>
+                {result && result.recommendation.length > 0 && (
+                    <>
+                        <Typography variant='h5' color='#fff'>Рекомендации</Typography>
+                        {result.recommendation.map((recomend, index) => (
+                            <Typography variant='subtitle1' color='#fff'>{`В ${index + 1} канал рекомендуется вложить ${(recomend*100).toFixed(2)} процентов бюджета`}</Typography>
+                        ))}
+                    </>
+                )}
+            </Box>
+
         </Box>
     );
 };
