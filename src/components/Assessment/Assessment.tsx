@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, List, ListItem, Typography} from "@mui/material";
-import {IParameterValueObj, IResModel} from "../../types/model.types";
+import {IParameterValueObj, IResModel, IResult} from "../../types/model.types";
 import service from "../../sevices/Auth";
 import {Argument} from "../Argument/Argument";
+import {VictoryChart, VictoryLine, VictoryTheme} from "victory";
 
-export const Assessment = ({onSetParametres}: {onSetParametres: (params: IParameterValueObj[]) => void}) => {
+export const Assessment = () => {
     const [modelList, setModelList] = useState<IResModel[]>([]);
     const [paramsValue, setParamsValue] = useState<IParameterValueObj[]>([]);
+    const [result, setResult] = useState<IResult | null>(null);
 
     useEffect(() => {
         service.getModel().then(res => {
@@ -41,8 +43,13 @@ export const Assessment = ({onSetParametres}: {onSetParametres: (params: IParame
     }
 
     const handleStartMachine = () => {
-        onSetParametres(paramsValue)
-
+        service.setParametres(paramsValue).then((res) => {
+            const data = res.data;
+            setResult({
+                calculateResult: data.calculateResult.map((item: string) => JSON.parse(item)),
+                recommendation: JSON.parse(data.recommendation)
+            })
+        }, e => console.log(e));
     }
 
     return (
@@ -89,7 +96,27 @@ export const Assessment = ({onSetParametres}: {onSetParametres: (params: IParame
             <Box sx={{
                 width: '50%',
             }}>
-                <Typography variant='h6' color='#fff'>график</Typography>
+                {result && result.calculateResult.length > 0 && (
+                    <VictoryChart
+                        theme={VictoryTheme.material}
+                        padding={{left: 50, bottom: 20}}
+                    >
+                        {result.calculateResult.map((item, index) => (
+                            <VictoryLine
+                                style={{
+                                    data: { stroke: `#c43a3${index}` },
+                                    parent: { border: "1px solid #ccc"}
+                                }}
+                                data={
+                                    item.map((value, index) => ({ x: index + 1, y: value }))
+                                }
+                                domain={{x: [0, 12], y: [0, 1000000]}}
+                                height={600}
+                            />
+                        ))}
+                    </VictoryChart>
+                )}
+
             </Box>
         </Box>
     );

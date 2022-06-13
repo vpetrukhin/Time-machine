@@ -2,24 +2,15 @@ import {Assessment, Header, Monitoring, PageBox} from "../../components";
 import {Box, Container, Tab, Tabs} from "@mui/material";
 import { SyntheticEvent, useState} from "react";
 import {TabPanel} from "../../components/TabPanel/TabPanel";
-import {IParameterValueObj} from "../../types/model.types";
-import service from "../../sevices/Auth";
 
 
 export const UserPage = () => {
     const [tabValue, setTabValue] = useState<number>(0);
-    // const [result, setResult] = useState<IResult | null>(null);
-
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
     };
 
-    const handleSetParams = (params: IParameterValueObj[]) => {
-        service.setParametres(params).then((res) => {
-            console.log(res.data);
-        }, e => console.log(e));
-    }
 
     return (
         <PageBox>
@@ -32,7 +23,7 @@ export const UserPage = () => {
                     </Tabs>
                 </Box>
                 <TabPanel value={tabValue} index={0}>
-                    <Assessment onSetParametres={handleSetParams} />
+                    <Assessment />
                 </TabPanel>
                 <TabPanel value={tabValue} index={1}>
                     <Monitoring />
